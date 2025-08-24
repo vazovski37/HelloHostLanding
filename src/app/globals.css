@@ -15,7 +15,7 @@
   --rounded-soft: 12px;
 }
 
-/* Apply your base styles */
+
 @layer base {
   body {
     background-color: var(--color-background);
@@ -23,9 +23,56 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    background-color: var(--color-background);
+    /* Add this line for the background glow */
+    /* background-image: radial-gradient(ellipse 80% 50% at 50% -20%,rgba(220, 38, 38, 0.3), hsla(0,0%,100%,0)); */
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    cursor: none;
   }
+
+  /* --- This is the new code for the background glows --- */
+  .relative.isolate::before,
+  .relative.isolate::after {
+    content: "";
+    position: absolute;
+    z-index: -1; /* Sits behind the content */
+    filter: blur(100px); /* Makes the glow extra soft */
+  }
+
+  /* Glow 1: Top Right (Red) */
+  .relative.isolate::before {
+    width: 400px;
+    height: 400px;
+    background: rgba(178, 13, 49, 0.2); /* Brighter red */
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+  }
+
+  /* Glow 2: Bottom Left (Darker Red/Purple) */
+  .relative.isolate::after {
+    width: 300px;
+    height: 300px;
+    background: rgba(86, 7, 24, 0.15); /* A different, darker color */
+    border-radius: 50%;
+    bottom: -150px;
+    left: -50px;
+  }
+  /* --- End of new code --- */
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
+.text-glow {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 20px var(--color-primary);
+}
+
+.button-glow {
+  box-shadow: 0 0 20px 0 rgba(185, 28, 28, 0.5); /* Use the RGB of your red color */
+}
 }
