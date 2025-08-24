@@ -1,12 +1,10 @@
 // file: src/components/SocialLinks.tsx
-import { Facebook, Twitter, Send, MessageSquare, Music } from 'lucide-react';
+import { Facebook, Send, Music2, Instagram } from 'lucide-react';
 
 const socialLinks = [
-  { icon: MessageSquare, href: '#', 'aria-label': 'Discord' }, // Placeholder for Discord
-  { icon: Facebook, href: '#', 'aria-label': 'Facebook' },
-  { icon: Twitter, href: '#', 'aria-label': 'X (formerly Twitter)' },
-  { icon: Music, href: '#', 'aria-label': 'TikTok' },      // Placeholder for TikTok
-  { icon: Send, href: '#', 'aria-label': 'Telegram' },
+  { icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61579427575463&mibextid=wwXIfr&rdid=R1X3xa33PkLJ4Fj7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19DRzebBZt%2F%3Fmibextid%3DwwXIfr#', 'aria-label': 'Facebook' },
+  { icon: Instagram, href: 'https://www.instagram.com/hellohostagent/?utm_source=ig_web_button_share_sheet', 'aria-label': 'Instagram' },
+  { icon: Music2, href: 'https://www.tiktok.com/@hellohostagent?is_from_webapp=1&sender_device=pc', 'aria-label': 'TikTok' },      // Placeholder for TikTok
 ];
 
 export const SocialLinks = () => (
