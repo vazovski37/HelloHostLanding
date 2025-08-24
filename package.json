@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
-    "@studio-freight/react-lenis": "^0.0.47",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
     "framer-motion": "^12.23.12",
+    "lenis": "^1.3.9",
     "lucide-react": "^0.541.0",
     "next": "15.5.0",
     "react": "19.1.0",
