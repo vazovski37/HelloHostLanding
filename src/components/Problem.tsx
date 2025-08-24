@@ -1,102 +1,167 @@
-// file: src/components/Problem.tsx
 'use client';
 
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion';
-import { ArrowRightLeft, Frown, GitBranchPlus } from 'lucide-react';
-import { Section } from './Section';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect, ReactNode } from "react";
+import { ArrowRightLeft, Frown, GitBranchPlus } from "lucide-react";
 
-const problems = [
-  { icon: ArrowRightLeft, title: "Fragmented Communication", description: "Hours lost daily coordinating between front desk, housekeeping, and maintenance over radios and paper logs." },
-  { icon: Frown, title: "Guest Experience Suffers", description: "Slow response times and missed details lead to negative reviews and lost revenue." },
-  { icon: GitBranchPlus, title: "Operational Chaos", description: "Juggling multiple, complex systems that don't talk to each other creates friction for your team." }
+// --- A simple hook to check for screen size ---
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < breakpoint);
+    };
+
+    // Check on initial mount
+    checkScreenSize();
+
+    // Add event listener to check on resize
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, [breakpoint]);
+
+  return isMobile;
+};
+// ---------------------------------------------
+
+
+const textVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.2, duration: 0.8, ease: "easeIn" },
+  }),
+};
+
+const cards = [
+  {
+    icon: ArrowRightLeft,
+    title: "Fragmented Communication",
+    text: "Hours lost daily coordinating between front desk, housekeeping, and maintenance over radios and paper logs.",
+  },
+  {
+    icon: Frown,
+    title: "Guest Experience Suffers",
+    text: "Slow response times and missed details lead to negative reviews and lost revenue.",
+  },
+  {
+    icon: GitBranchPlus,
+    title: "Operational Chaos",
+    text: "Juggling multiple, complex systems that don't talk to each other creates friction for your team.",
+  },
 ];
 
-export const Problem = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  // --- Mouse Tracking for Spotlight Effect ---
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { stiffness: 400, damping: 30 };
-  const smoothMouseX = useSpring(mouseX, springConfig);
-  const smoothMouseY = useSpring(mouseY, springConfig);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (containerRef.current) {
-      const { left, top } = containerRef.current.getBoundingClientRect();
-      mouseX.set(e.clientX - left);
-      mouseY.set(e.clientY - top);
-    }
-  };
-  
-  const handleMouseLeave = () => {
-      mouseX.set(0);
-      mouseY.set(0);
-  }
-  // ------------------------------------------
-
-  // --- Scroll Tracking for Parallax Effect ---
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Each card will have a different parallax speed
-  const y1 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [-120, 120]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [-140, 140]);
-  const cardParallax = [y1, y2, y3];
-  // ------------------------------------------
-
-  return (
-    <Section ref={containerRef}>
-      {/* --- Corrected Headline Animation --- */}
-      <div className="text-center mb-24 overflow-hidden">
-        <motion.h2
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.5 }}
-          className="text-4xl sm:text-5xl font-bold text-[var(--color-primary)] leading-tight"
-        >
-          Running a Hotel Shouldn't Be This Disconnected.
-        </motion.h2>
-      </div>
-      {/* ------------------------------------ */}
-      
-      {/* Main container for the grid that tracks the mouse */}
-      <motion.div
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="relative grid grid-cols-1 md:grid-cols-3 gap-8 group"
+// --- Mobile Version of the Component ---
+const MobileProblem = () => (
+  <section className="bg-[var(--color-background)] py-20 sm:py-28 px-6">
+    <div className="max-w-4xl mx-auto flex flex-col justify-center items-center">
+      {/* Headline */}
+      <motion.h2
+        className="text-4xl md:text-5xl font-bold text-[var(--color-primary)] text-center max-w-3xl"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.6 }}
       >
-        {/* --- The Spotlight Div --- */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{
-            background: useTransform(
-              [smoothMouseX, smoothMouseY],
-              ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, rgba(185, 28, 28, 0.15), transparent 80%)`
-            )
-          }}
-        />
-        {/* ------------------------- */}
+        Running a Hotel Shouldn’t Be This Disconnected.
+      </motion.h2>
 
-        {problems.map((problem, i) => (
+      {/* Subtext */}
+      <motion.p
+        className="text-lg text-[var(--color-text-secondary)] mt-6 text-center max-w-2xl"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Hotels today still rely on outdated processes and siloed systems that slow everything down.
+      </motion.p>
+
+      {/* Cards */}
+      <div className="mt-16 grid grid-cols-1 gap-8 w-full">
+        {cards.map((card, i) => (
           <motion.div
             key={i}
-            style={{ y: cardParallax[i] }} // Apply the parallax effect here
-            className="relative bg-[var(--color-content)] p-8 rounded-[var(--rounded-soft)] border border-white/10"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.2, duration: 0.8 }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="bg-[var(--color-content)] rounded-[var(--rounded-soft)] p-8 border border-white/10"
           >
-            <div className="relative z-10 text-center flex flex-col items-center">
-              <problem.icon className="h-10 w-10 text-[var(--color-primary)] mb-4" />
-              <h3 className="text-xl font-bold">{problem.title}</h3>
-              <p className="mt-2 text-[var(--color-text-secondary)]">{problem.description}</p>
-            </div>
+            <card.icon className="h-10 w-10 text-[var(--color-primary)] mb-4" />
+            <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4">{card.title}</h3>
+            <p className="text-[var(--color-text-secondary)]">{card.text}</p>
           </motion.div>
         ))}
-      </motion.div>
-    </Section>
-  );
+      </div>
+    </div>
+  </section>
+);
+
+// --- Desktop Version of the Component ---
+const DesktopProblem = () => {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start start", "end end"],
+    });
+
+    const scale = useTransform(scrollYProgress, [0, 0.7], [0.95, 1]);
+    const opacity = useTransform(scrollYProgress, [0, 0.7], [0.6, 1]);
+
+    return (
+        <section ref={ref} className="relative h-[300vh] bg-[var(--color-background)]">
+            <motion.div
+                style={{ scale, opacity }}
+                className="sticky top-0 h-screen flex flex-col justify-center items-center px-6"
+            >
+                <motion.h2
+                    className="text-4xl md:text-5xl font-bold text-[var(--color-primary)] text-center max-w-3xl"
+                    variants={textVariants} initial="hidden" whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }} custom={0}
+                >
+                    Running a Hotel Shouldn’t Be This Disconnected.
+                </motion.h2>
+
+                <motion.p
+                    className="text-lg text-[var(--color-text-secondary)] mt-6 text-center max-w-2xl"
+                    variants={textVariants} initial="hidden" whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }} custom={1}
+                >
+                    Hotels today still rely on outdated processes and siloed systems that slow everything down.
+                </motion.p>
+
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+                    {cards.map((card, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 + i * 0.2, duration: 0.8 }}
+                            viewport={{ once: true }}
+                            className="bg-[var(--color-content)] rounded-[var(--rounded-soft)] p-8 border border-white/10"
+                        >
+                            <card.icon className="h-10 w-10 text-[var(--color-primary)] mb-4" />
+                            <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4">{card.title}</h3>
+                            <p className="text-[var(--color-text-secondary)]">{card.text}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </motion.div>
+        </section>
+    );
 };
+
+
+// --- Main Component ---
+export function Problem() {
+  const isMobile = useIsMobile();
+
+  // Render the mobile version if the screen is small, otherwise render the desktop version.
+  return isMobile ? <MobileProblem /> : <DesktopProblem />;
+}
