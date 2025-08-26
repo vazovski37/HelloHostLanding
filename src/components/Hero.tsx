@@ -65,12 +65,14 @@ export const Hero = () => (
 
       {/* --- USE THE NEW BUTTON COMPONENT --- */}
       <motion.div variants={itemVariants} className="mt-10 flex justify-center gap-4">
-        <Button href="#features" variant="primary">
-          Explore Features
-        </Button>
-        <Button href="#join" variant="secondary">
-          Try for Free
-        </Button>
+            <Button 
+              href="#join" 
+              variant="primary" 
+              className="py-2 px-5" 
+              onClick={(e) => handleScroll(e, '#join')}
+            >
+              Join Waitlist
+            </Button>
       </motion.div>
       {/* --------------------------------- */}
     </motion.div>
