@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Button } from './Button';
+import { Button } from './Button'; // Assuming Button component is in this path
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -9,10 +9,21 @@ import { Menu, X } from 'lucide-react';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navLinks = [
-    { href: '#features', label: 'Features' },
-    { href: '#roadmap', label: 'Roadmap' },
-  ];
+  // Function to handle smooth scrolling for the remaining button
+  const handleScroll = (e, href) => {
+    e.preventDefault();
+    const targetId = href.substring(1); // Remove the '#'
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+
+    // Close the mobile menu after clicking a link
+    setIsMenuOpen(false);
+  };
 
   const menuVariants = {
     initial: { opacity: 0, y: -20 },
@@ -26,24 +37,24 @@ export const Header = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <a href="#" className="flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
-            <Image 
-              src="/icon.jpg" 
-              alt="Hello Host Logo" 
-              width={40} 
-              height={40} 
+            <Image
+              src="/icon.jpg"
+              alt="Hello Host Logo"
+              width={40}
+              height={40}
               className="rounded-lg"
             />
             <span className="text-2xl font-bold">Hello Host</span>
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
-                {link.label}
-              </a>
-            ))}
-            <Button href="#join" variant="primary" className="py-2 px-5">
+          {/* Desktop Button */}
+          <nav className="hidden md:flex items-center">
+            <Button 
+              href="#join" 
+              variant="primary" 
+              className="py-2 px-5" 
+              onClick={(e) => handleScroll(e, '#join')}
+            >
               Join Waitlist
             </Button>
           </nav>
@@ -67,18 +78,12 @@ export const Header = () => {
             exit="exit"
             className="md:hidden absolute top-20 left-0 w-full bg-[var(--color-background)]/95 backdrop-blur-md"
           >
-            <nav className="flex flex-col items-center space-y-6 py-8">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.href} 
-                  href={link.href} 
-                  className="text-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-              <Button href="#join" variant="primary" onClick={() => setIsMenuOpen(false)}>
+            <nav className="flex flex-col items-center py-8">
+              <Button 
+                href="#join" 
+                variant="primary" 
+                onClick={(e) => handleScroll(e, '#join')}
+              >
                 Join Waitlist
               </Button>
             </nav>
