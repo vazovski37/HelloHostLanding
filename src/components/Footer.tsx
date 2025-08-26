@@ -15,20 +15,20 @@ export const Footer = () => (
         <a href="#" aria-label="LinkedIn" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">
           <Linkedin size={24} />
         </a> */}
-        <a href="#" aria-label="Facebook" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">
+        <a href="https://www.facebook.com/profile.php?id=61579427575463&mibextid=wwXIfr&rdid=R1X3xa33PkLJ4Fj7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19DRzebBZt%2F%3Fmibextid%3DwwXIfr#" aria-label="Facebook" className="text-[var(--color-text-secondary)] hover:text-white transition-colors">
           <Facebook size={24} />
         </a>
       </div>
 
       {/* Contact Information */}
       <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm text-[var(--color-text-secondary)]">
-        <a href="mailto:contact@hellohost.com" className="flex items-center gap-2 hover:text-white transition-colors">
+        <a href="mailto:hellohostagent@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
           <Mail size={16} />
-          <span>contact@hellohost.com</span>
+          <span>hellohostagent@gmail.com</span>
         </a>
-        <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-white transition-colors">
+        <a href="tel:+995599417886" className="flex items-center gap-2 hover:text-white transition-colors">
           <Phone size={16} />
-          <span>+1 (234) 567-890</span>
+          <span>+995 599 41 78 86</span>
         </a>
       </div>
 
